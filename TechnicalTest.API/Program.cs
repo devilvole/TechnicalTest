@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TechnicalTest.API.Models;
 using TechnicalTest.Data;
+using TechnicalTest.API.Services;
 
 namespace BSpoke.Test;
 
@@ -21,6 +22,8 @@ public class Program
 		builder.Services.AddSwaggerGen();
 
 		builder.Services.AddDbContext<ApplicationContext>();
+
+		builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 		var app = builder.Build();
 

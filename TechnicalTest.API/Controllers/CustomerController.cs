@@ -1,45 +1,32 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using TechnicalTest.API.Models;
+using TechnicalTest.API.Services;
 using TechnicalTest.Data;
 
 namespace TechnicalTest.API.Controllers
 {
 	public class CustomerController : Controller
 	{
-		ApplicationContext db;
+		ICustomerService customerService;
 
-		public CustomerController(ApplicationContext db)
+		public CustomerController(ICustomerService customerService)
 		{
-			this.db = db;
+			this.customerService = customerService;
 		}
 
 		[HttpPost]
 		[Route("[controller]/Customer")]
 		public async Task<IResult> Add([FromBody] AddCustomerModel customer)
 		{
-			db.Customers.Add(new Customer
-			{
-				Name = customer.Name,
-			});
-
-			await db.SaveChangesAsync();
-
-			return Results.Ok();
+			return await customerService.AddCustomer(customer);
 		}
 		 
 		[HttpGet]
 		[Route("[controller]/Customer")]
 		public async Task<IResult> GetAll()
 		{
-			var customers = db.Customers
-				.Select(x => new
-				{
-					x.Id,
-					x.Name
-				}).ToList();
-
-			return Results.Ok(customers);
+			return await customerService.GetAll();
 		}
 	}
 }
