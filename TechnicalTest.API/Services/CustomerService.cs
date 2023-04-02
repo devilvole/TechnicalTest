@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Security.Cryptography.Xml;
 using TechnicalTest.API.Models;
 using TechnicalTest.Data;
 
@@ -25,6 +26,8 @@ namespace TechnicalTest.API.Services
 				db.Customers.Add(new Customer
 				{
 					Name = customer.Name,
+					Birthdate = customer.Birthdate,
+					TransferLimit = customer.TransferLimit,
 				});
 
 				await db.SaveChangesAsync();
@@ -41,20 +44,51 @@ namespace TechnicalTest.API.Services
 		/// </summary>
 		public async Task<IResult> DeleteCustomer(int customerId)
 		{
-			if (!await db.Customers.AnyAsync(x => x.Id == customerId))
-			{
-				var customer = await db.Customers.Where(x => x.Id == customerId).FirstOrDefaultAsync();
+			var customer = await db.Customers.Include(r => r.BankAccounts).Include(r => r.AccountTransfers).FirstOrDefaultAsync(x => x.Id == customerId);
 
+			if (customer is Customer)
+			{
 				// delete accounts etc
+				foreach (var account in customer.BankAccounts)
+				{
+					db.BankAccounts.Remove(account);
+				}
+
+				foreach (var transaction in customer.AccountTransfers)
+				{
+					db.AccountTransfer.Remove(transaction);
+				}
 
 				await db.SaveChangesAsync();
 				return Results.Ok();
 			}
 			else
 			{
-				return Results.UnprocessableEntity("Customer already exists");
+				return Results.UnprocessableEntity("Customer not found");
 			}
 		}
+
+		/// <summary>
+		/// <inheritdoc/>
+		/// </summary>
+		public async Task<IResult> UpdateCustomer(UpdateCustomerModel updateModel)
+		{
+			var customer = await db.Customers.FirstOrDefaultAsync(x => x.Id == updateModel.Id);
+
+			if (customer is Customer)
+			{
+				customer.Birthdate = updateModel.Birthdate;
+				customer.TransferLimit = updateModel.TransferLimit;
+
+				await db.SaveChangesAsync();
+				return Results.Ok();
+			}
+			else
+			{
+				return Results.UnprocessableEntity("Customer not found");
+			}
+		}
+
 
 		/// <summary>
 		/// <inheritdoc/>
@@ -106,7 +140,7 @@ namespace TechnicalTest.API.Services
 				return Results.UnprocessableEntity("Customer not found");
 			}
 
-			var accounts = customer.BankAccounts.Select(x => new { x.AccountNumber, x.CustomerId, x.Frozen }).ToList();
+			var accounts = customer.BankAccounts.Select(x => new { x.AccountNumber, x.CustomerId, x.Frozen, x.Id }).ToList();
 
 			return Results.Ok(accounts);
 		}
@@ -147,14 +181,12 @@ namespace TechnicalTest.API.Services
 				return Results.UnprocessableEntity("Transfer amount over limit");
 			}
 
-			var newTransfer = new AccountTransfer()
+			customer.AccountTransfers.Add(new AccountTransfer()
 			{
 				Amount = transfer.amount,
 				SourceAccount = source,
 				DestinationAccount = destination,
-			};
-
-			customer.AccountTransfers.Add(newTransfer);
+			});
 
 			await db.SaveChangesAsync();
 
@@ -165,16 +197,16 @@ namespace TechnicalTest.API.Services
 		[Route("[controller]/GetTransfers")]
 		public async Task<IResult> GetTransfers(int customerId)
 		{
-			var customer = await db.Customers.Include(r => r.AccountTransfers).FirstOrDefaultAsync(x => x.Id == customerId);
+			var customer = await db.Customers.Include(r => r.AccountTransfers).ThenInclude(x => x.SourceAccount).Include(r => r.AccountTransfers).ThenInclude(x => x.DestinationAccount).FirstOrDefaultAsync(x => x.Id == customerId);
 
 			if (customer == null)
 			{
 				return Results.UnprocessableEntity("Customer not found");
 			}
 
-			//			var accounts = customer.AccountTransfers.Select(x => new { x.SourceAccount.AccountNumber, x.DestinationAccount.AccountNumber }).ToList();
+			var transfers = customer.AccountTransfers.Select(x => new { Source = x.SourceAccount.AccountNumber, Destination = x.DestinationAccount.AccountNumber, Amount = x.Amount}).ToList();
 
-			return Results.Ok();
+			return Results.Ok(transfers);
 		}
 
 

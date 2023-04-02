@@ -19,6 +19,7 @@ namespace TechnicalTest.API.Services
 
 		Task<IResult> GetTransfers(int customerId);
 
+		Task<IResult> UpdateCustomer(UpdateCustomerModel updateModel);
 	}
 
 }

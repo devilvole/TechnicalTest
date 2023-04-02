@@ -28,5 +28,13 @@ namespace TechnicalTest.API.Controllers
 		{
 			return await customerService.GetAll();
 		}
+
+		[HttpPost]
+		[Route("[controller]/Update")]
+		public async Task<IResult> Update([FromBody] UpdateCustomerModel customer)
+		{
+			return await customerService.UpdateCustomer(customer);
+		}
+
 	}
 }
