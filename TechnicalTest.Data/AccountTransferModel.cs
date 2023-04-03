@@ -1,3 +1,3 @@
 ﻿namespace TechnicalTest.API.Models;
 
-public record AccountTransferModel(int CustomerId, int SourceAccountId, int DestinationAccountId, decimal Amount, string Reference);
+public record AccountTransferModel(string CustomerName, string SourceAccount, string DestinationAccount, decimal Amount, string Reference);

@@ -25,9 +25,24 @@ namespace TechnicalTest.API.Controllers
 
 		[HttpPost]
 		[Route("[controller]/GetAccounts")]
-		public async Task<IResult> Get([FromQuery] int customerId)
+		public async Task<IResult> Get([FromQuery] string customerName)
 		{
-			return await customerService.GetAllAccounts(customerId);
+			return await customerService.GetAllAccounts(customerName);
 		}
+
+		[HttpPost]
+		[Route("[controller]/DeleteAccount")]
+		public async Task<IResult> Delete([FromQuery] DeleteAccountModel model)
+		{
+			return await customerService.DeleteAccount(model);
+		}
+
+		[HttpPost]
+		[Route("[controller]/UpdateAccount")]
+		public async Task<IResult> Update([FromBody] UpdateAccountModel account)
+		{
+			return await customerService.UpdateAccount(account);
+		}
+
 	}
 }

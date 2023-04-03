@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
 using System.Security.Cryptography.Xml;
@@ -75,20 +76,17 @@ namespace TechnicalTest.API.Services
 		{
 			var customer = await db.Customers.FirstOrDefaultAsync(x => x.Name == updateModel.Name);
 
-			if (customer is Customer)
-			{
-				customer.Birthdate = updateModel.Birthdate;
-				customer.TransferLimit = updateModel.TransferLimit;
-
-				await db.SaveChangesAsync();
-				return Results.Ok();
-			}
-			else
+			if (customer is not Customer)
 			{
 				return Results.UnprocessableEntity("Customer not found");
 			}
-		}
 
+			customer.Birthdate = updateModel.Birthdate;
+			customer.TransferLimit = updateModel.TransferLimit;
+
+			await db.SaveChangesAsync();
+			return Results.Ok();
+		}
 
 		/// <summary>
 		/// <inheritdoc/>
@@ -109,9 +107,9 @@ namespace TechnicalTest.API.Services
 
 		public async Task<IResult> AddAccount(AddAccountModel account)
 		{
-			var customer = await db.Customers.Include(r => r.BankAccounts).FirstOrDefaultAsync(x => x.Id == account.CustomerId);
+			var customer = await db.Customers.Include(r => r.BankAccounts).FirstOrDefaultAsync(x => x.Name == account.customerName);
 
-			if (customer == null)
+			if (customer is not Customer)
 			{
 				return Results.UnprocessableEntity("Customer not found");
 			}
@@ -120,6 +118,8 @@ namespace TechnicalTest.API.Services
 			{
 				AccountNumber = account.AccountNumber,
 				Frozen = account.Frozen,
+				Amount = account.Amount,
+				Customer = customer,
 			});
 
 			await db.SaveChangesAsync();
@@ -131,42 +131,93 @@ namespace TechnicalTest.API.Services
 		/// <inheritdoc/>
 		/// </summary>
 
-		public async Task<IResult> GetAllAccounts(int customerId)
+		public async Task<IResult> GetAllAccounts(string customerName)
 		{
-			var customer = await db.Customers.Include(r => r.BankAccounts).FirstOrDefaultAsync(x => x.Id == customerId);
+			var customer = await db.Customers.Include(r => r.BankAccounts).FirstOrDefaultAsync(x => x.Name == customerName);
 
-			if (customer == null)
+			if (customer is not Customer)
 			{
 				return Results.UnprocessableEntity("Customer not found");
 			}
 
-			var accounts = customer.BankAccounts.Select(x => new { x.AccountNumber, x.CustomerId, x.Frozen, x.Id }).ToList();
+			var accounts = customer.BankAccounts.Select(x => new { x.AccountNumber, x.Amount, x.Frozen, x.Id }).ToList();
 
 			return Results.Ok(accounts);
+		}
+
+		public async Task<IResult> DeleteAccount(DeleteAccountModel model)
+		{
+			var customer = await db.Customers.Include(r => r.BankAccounts).FirstOrDefaultAsync(x => x.Name == model.customerName);
+
+			if (customer is not Customer)
+			{
+				return Results.UnprocessableEntity("Customer not found");
+			}
+
+			var account = customer.BankAccounts.Where(x => x.AccountNumber == model.AccountNumber).FirstOrDefault();
+
+			if (account is not BankAccount)
+			{
+				return Results.UnprocessableEntity("account not found");
+			}
+
+			customer.BankAccounts.Remove(account);
+
+			await db.SaveChangesAsync();
+
+			return Results.Ok();
 		}
 
 		/// <summary>
 		/// <inheritdoc/>
 		/// </summary>
-
-		public async Task<IResult> AccountTransfer(AccountTransferModel transfer)
+		public async Task<IResult> UpdateAccount(UpdateAccountModel model)
 		{
-			var customer = await db.Customers.Include(r => r.BankAccounts).Include(r => r.AccountTransfers).FirstOrDefaultAsync(x => x.Id == transfer.CustomerId);
+			var customer = await db.Customers.Include(r => r.BankAccounts).FirstOrDefaultAsync(x => x.Name == model.customerName);
 
-			if (customer == null)
+			if (customer is not Customer)
 			{
 				return Results.UnprocessableEntity("Customer not found");
 			}
 
-			if (transfer.SourceAccountId == transfer.DestinationAccountId)
+			var account = customer.BankAccounts.Where(x => x.AccountNumber == model.AccountNumber).FirstOrDefault();
+
+			if (account is not BankAccount)
+			{
+				return Results.UnprocessableEntity("account not found");
+			}
+
+			account.Frozen = model.Frozen;
+			account.Amount = model.Amount;
+
+			await db.SaveChangesAsync();
+			return Results.Ok();
+		}
+
+
+
+		/// <summary>
+		/// <inheritdoc/>
+		/// </summary>
+
+		public async Task<IResult> AccountTransfer(AccountTransferModel model)
+		{
+			var customer = await db.Customers.Include(r => r.BankAccounts).Include(r => r.AccountTransfers).FirstOrDefaultAsync(x => x.Name == model.CustomerName);
+
+			if (customer is not Customer)
+			{
+				return Results.UnprocessableEntity("Customer not found");
+			}
+
+			if (model.SourceAccount == model.DestinationAccount)
 			{
 				return Results.UnprocessableEntity("Accounts may not be the same");
 			}
 
-			var source = customer.BankAccounts.Where(x => x.Id == transfer.SourceAccountId).FirstOrDefault();
-			var destination = customer.BankAccounts.Where(x => x.Id == transfer.DestinationAccountId).FirstOrDefault();
+			var source = customer.BankAccounts.Where(x => x.AccountNumber == model.SourceAccount).FirstOrDefault();
+			var destination = customer.BankAccounts.Where(x => x.AccountNumber == model.DestinationAccount).FirstOrDefault();
 
-			if (source == null || destination == null)
+			if (source is not BankAccount || destination is not BankAccount)
 			{
 				return Results.UnprocessableEntity("Account not found");
 			}
@@ -176,35 +227,53 @@ namespace TechnicalTest.API.Services
 				return Results.UnprocessableEntity("Account frozen");
 			}
 
-			if (transfer.Amount > customer.TransferLimit)
+			// reset daily limit
+			var lastTransfer = customer.AccountTransfers.LastOrDefault();
+			if (lastTransfer is AccountTransfer)
+			{
+				if( DateTime.Now.DayOfYear != lastTransfer.TransferedAt.DayOfYear) 
+				{
+					customer.AmountTransferredToday = 0;
+				}
+			}
+
+			if (model.Amount + customer.AmountTransferredToday > customer.TransferLimit)
 			{
 				return Results.UnprocessableEntity("Transfer amount over limit");
 			}
 
+			if(model.Amount > source.Amount)
+			{
+				return Results.UnprocessableEntity("Source has unsufficient funds");
+			}
+
+			source.Amount -= model.Amount;
+			destination.Amount += model.Amount;
+
 			customer.AccountTransfers.Add(new AccountTransfer()
 			{
-				Amount = transfer.Amount,
+				Amount = model.Amount,
 				SourceAccount = source,
 				DestinationAccount = destination,
 			});
+
+			customer.AmountTransferredToday += model.Amount;
 
 			await db.SaveChangesAsync();
 
 			return Results.Ok();
 		}
 
-		[HttpPost]
-		[Route("[controller]/GetTransfers")]
-		public async Task<IResult> GetTransfers(int customerId)
+		public async Task<IResult> GetTransfers(string customerName)
 		{
-			var customer = await db.Customers.Include(r => r.AccountTransfers).ThenInclude(x => x.SourceAccount).Include(r => r.AccountTransfers).ThenInclude(x => x.DestinationAccount).FirstOrDefaultAsync(x => x.Id == customerId);
+			var customer = await db.Customers.Include(r => r.AccountTransfers).ThenInclude(x => x.SourceAccount).Include(r => r.AccountTransfers).ThenInclude(x => x.DestinationAccount).FirstOrDefaultAsync(x => x.Name == customerName);
 
 			if (customer == null)
 			{
 				return Results.UnprocessableEntity("Customer not found");
 			}
 
-			var transfers = customer.AccountTransfers.Select(x => new { Source = x.SourceAccount.AccountNumber, Destination = x.DestinationAccount.AccountNumber, Amount = x.Amount}).ToList();
+			var transfers = customer.AccountTransfers.Select(x => new { Source = x.SourceAccount.AccountNumber, Destination = x.DestinationAccount.AccountNumber, Amount = x.Amount }).ToList();
 
 			return Results.Ok(transfers);
 		}

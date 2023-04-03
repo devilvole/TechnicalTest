@@ -30,10 +30,41 @@ namespace ServiceTests
 			Assert.NotNull(rc);
 		}
 
-		//	customer tests
-		//	
+		//	add customer tests
+		//	valid customer - non-null name
+		//	valid customer - does not exist
+		//	valid transfer limit
+
+		//	delete customer tests
+		//	valid customer - non-null name
+		//	valid customer - does exist
+		//	add accounts and transfers
+		//	delete should remove all records
+
+		//	update customer tests
+		//	valid customer - non-null name
+		//	valid customer - does exist
+		//	modify and check each field
+
+		//	add account tests
+		//	valid customer - non-null name
+		//	valid account - non-null name
+		//	valid customer - does exist
+		//	account does not exist
+		//	(I think any value of Amoungt is valid)
+
+		//	delete account tests
+		//	valid customer - non-null name
+		//	valid account - non-null name
+		//	valid customer - does exist
+		//	account does exist
+		//	delete and verify
+
 
 		//	Transfer tests
+		//	valid customer - non-null name
+		//	valid account - non-null name
+		//	valid customer - does exist
 		//	valid account - not the same
 		//	valid account - both exist
 		//	valid transfer amount - non-zero, non-negative

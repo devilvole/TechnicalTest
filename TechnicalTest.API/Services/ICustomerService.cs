@@ -7,19 +7,18 @@ namespace TechnicalTest.API.Services
 	public interface ICustomerService
 	{
 		Task<IResult> AddCustomer(AddCustomerModel customer);
-
 		Task<IResult> DeleteCustomer(string name);
-
 		Task<IResult> GetAll();
+		Task<IResult> UpdateCustomer(UpdateCustomerModel updateModel);
+
 
 		Task<IResult> AddAccount(AddAccountModel account);
+		Task<IResult> DeleteAccount(DeleteAccountModel model);
+		Task<IResult> GetAllAccounts(string customerName);
+		Task<IResult> UpdateAccount([FromBody] UpdateAccountModel account);
 
-		Task<IResult> GetAllAccounts(int customerId);
 		Task<IResult> AccountTransfer(AccountTransferModel transfer);
-
-		Task<IResult> GetTransfers(int customerId);
-
-		Task<IResult> UpdateCustomer(UpdateCustomerModel updateModel);
+		Task<IResult> GetTransfers(string customerName);
 	}
 
 }

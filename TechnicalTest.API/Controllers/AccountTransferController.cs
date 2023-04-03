@@ -20,7 +20,7 @@ namespace TechnicalTest.API.Controllers
 
 
 		[HttpPost]
-		[Route("[controller]/AccountTransfer")]
+		[Route("[controller]/Transfer")]
 		public async Task<IResult> AccountTransfer([FromBody] AccountTransferModel transfer)
 		{
 			return await customerService.AccountTransfer(transfer);
@@ -28,9 +28,9 @@ namespace TechnicalTest.API.Controllers
 
 		[HttpPost]
 		[Route("[controller]/GetTransfers")]
-		public async Task<IResult> Get([FromQuery] int customerId)
+		public async Task<IResult> Get([FromQuery] string customerName)
 		{
-			return await customerService.GetTransfers(customerId);
+			return await customerService.GetTransfers(customerName);
 		}
 	}
 }
