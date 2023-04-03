@@ -15,8 +15,9 @@ namespace ServiceTests
 
 			var options = new DbContextOptionsBuilder<ApplicationContext>()
 				//				.UseSqlite("Data Source=database.db;")
-				.UseSqlite("Data Source=:memory:")
+				//				.UseSqlite("Data Source=:memory:")
 				//				.UseSqlite("Data Source=")
+				//				.UseInMemoryDatabase("test")
 				.Options;
 			ApplicationContext context = new(options);
 			service = new CustomerService(context);
