@@ -61,6 +61,8 @@ namespace TechnicalTest.API.Services
 				db.AccountTransfer.Remove(transaction);
 			}
 
+			db.Customers.Remove(customer);
+
 			await db.SaveChangesAsync();
 			return Results.Ok();
 		}

@@ -23,7 +23,7 @@ namespace TechnicalTest.API.Controllers
 			return await customerService.AddAccount(account);
 		}
 
-		[HttpPost]
+		[HttpGet]
 		[Route("[controller]/Get")]
 		public async Task<IResult> Get([FromQuery] string customerName)
 		{
