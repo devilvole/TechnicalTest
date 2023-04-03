@@ -36,5 +36,11 @@ namespace TechnicalTest.API.Controllers
 			return await customerService.UpdateCustomer(customer);
 		}
 
+		[HttpPost]
+		[Route("[controller]/Delete")]
+		public async Task<IResult> Delete([FromQuery] string name)
+		{
+			return await customerService.DeleteCustomer(name);
+		}
 	}
 }

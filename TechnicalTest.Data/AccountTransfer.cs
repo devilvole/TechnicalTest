@@ -8,7 +8,8 @@ public class AccountTransfer
 	public BankAccount? SourceAccount { get; set; }
 	public BankAccount? DestinationAccount { get; set; }
 	public decimal Amount { get; set; }
-	public DateTime? TransferedAt { get; set; } = DateTime.UtcNow;
+	public DateTime TransferedAt { get; set; } = DateTime.UtcNow;
 	public int CustomerId { get; set; }
 	public Customer? Customer { get; set; }
+	public string? Reference { get; set; }
 }

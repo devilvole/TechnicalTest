@@ -42,9 +42,9 @@ namespace TechnicalTest.API.Services
 		/// <summary>
 		/// <inheritdoc/>
 		/// </summary>
-		public async Task<IResult> DeleteCustomer(int customerId)
+		public async Task<IResult> DeleteCustomer(string name)
 		{
-			var customer = await db.Customers.Include(r => r.BankAccounts).Include(r => r.AccountTransfers).FirstOrDefaultAsync(x => x.Id == customerId);
+			var customer = await db.Customers.Include(r => r.BankAccounts).Include(r => r.AccountTransfers).FirstOrDefaultAsync(x => x.Name == name);
 
 			if (customer is Customer)
 			{
@@ -73,7 +73,7 @@ namespace TechnicalTest.API.Services
 		/// </summary>
 		public async Task<IResult> UpdateCustomer(UpdateCustomerModel updateModel)
 		{
-			var customer = await db.Customers.FirstOrDefaultAsync(x => x.Id == updateModel.Id);
+			var customer = await db.Customers.FirstOrDefaultAsync(x => x.Name == updateModel.Name);
 
 			if (customer is Customer)
 			{
@@ -176,14 +176,14 @@ namespace TechnicalTest.API.Services
 				return Results.UnprocessableEntity("Account frozen");
 			}
 
-			if (transfer.amount > customer.TransferLimit)
+			if (transfer.Amount > customer.TransferLimit)
 			{
 				return Results.UnprocessableEntity("Transfer amount over limit");
 			}
 
 			customer.AccountTransfers.Add(new AccountTransfer()
 			{
-				Amount = transfer.amount,
+				Amount = transfer.Amount,
 				SourceAccount = source,
 				DestinationAccount = destination,
 			});

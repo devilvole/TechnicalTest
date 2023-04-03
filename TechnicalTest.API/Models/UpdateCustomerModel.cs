@@ -1,3 +1,3 @@
 namespace TechnicalTest.API.Models;
 
-public record UpdateCustomerModel(int Id, DateTime Birthdate, decimal TransferLimit);
+public record UpdateCustomerModel(string Name, DateTime Birthdate, decimal TransferLimit);
