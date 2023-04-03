@@ -91,7 +91,7 @@ namespace TechnicalTest.API.Services
 		/// <summary>
 		/// <inheritdoc/>
 		/// </summary>
-		public async Task<IResult> GetAll()
+		public async Task<IResult> GetAllCustomers()
 		{
 			var customers = await db.Customers
 				.Select(x => new
@@ -104,6 +104,31 @@ namespace TechnicalTest.API.Services
 
 			return Results.Ok(customers);
 		}
+
+		/// <summary>
+		/// <inheritdoc/>
+		/// </summary>
+		public async Task<IResult> GetCustomer(string name)
+		{
+			var customer = await db.Customers.FirstOrDefaultAsync(x => x.Name == name);
+
+			if (customer is not Customer)
+			{
+				return Results.UnprocessableEntity("Customer not found");
+			}
+
+			var customers = await db.Customers
+				.Select(x => new
+				{
+					x.Id,
+					x.Name,
+					x.Birthdate,
+					x.TransferLimit,
+				}).Where(x => x.Name == name).ToListAsync();
+
+			return Results.Ok(customers);
+		}
+
 
 		public async Task<IResult> AddAccount(AddAccountModel account)
 		{
@@ -244,7 +269,7 @@ namespace TechnicalTest.API.Services
 
 			if(model.Amount > source.Amount)
 			{
-				return Results.UnprocessableEntity("Source has unsufficient funds");
+				return Results.UnprocessableEntity("Source has insufficient funds");
 			}
 
 			source.Amount -= model.Amount;
@@ -255,6 +280,7 @@ namespace TechnicalTest.API.Services
 				Amount = model.Amount,
 				SourceAccount = source,
 				DestinationAccount = destination,
+				Reference = model.Reference,
 			});
 
 			customer.AmountTransferredToday += model.Amount;
@@ -273,7 +299,7 @@ namespace TechnicalTest.API.Services
 				return Results.UnprocessableEntity("Customer not found");
 			}
 
-			var transfers = customer.AccountTransfers.Select(x => new { Source = x.SourceAccount.AccountNumber, Destination = x.DestinationAccount.AccountNumber, Amount = x.Amount }).ToList();
+			var transfers = customer.AccountTransfers.Select(x => new { Source = x.SourceAccount?.AccountNumber, Destination = x.DestinationAccount?.AccountNumber, Amount = x.Amount }).ToList();
 
 			return Results.Ok(transfers);
 		}

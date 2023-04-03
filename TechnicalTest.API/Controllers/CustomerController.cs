@@ -16,17 +16,24 @@ namespace TechnicalTest.API.Controllers
 		}
 
 		[HttpPost]
-		[Route("[controller]/Customer")]
+		[Route("[controller]/Add")]
 		public async Task<IResult> Add([FromBody] AddCustomerModel customer)
 		{
 			return await customerService.AddCustomer(customer);
 		}
-		 
+
 		[HttpGet]
-		[Route("[controller]/Customer")]
+		[Route("[controller]/Get")]
+		public async Task<IResult> Get([FromQuery] string name)
+		{
+			return await customerService.GetCustomer(name);
+		}
+
+		[HttpGet]
+		[Route("[controller]/GetAll")]
 		public async Task<IResult> GetAll()
 		{
-			return await customerService.GetAll();
+			return await customerService.GetAllCustomers();
 		}
 
 		[HttpPost]

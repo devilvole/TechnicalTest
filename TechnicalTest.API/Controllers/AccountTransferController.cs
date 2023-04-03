@@ -27,7 +27,7 @@ namespace TechnicalTest.API.Controllers
 		}
 
 		[HttpPost]
-		[Route("[controller]/GetTransfers")]
+		[Route("[controller]/GetAll")]
 		public async Task<IResult> Get([FromQuery] string customerName)
 		{
 			return await customerService.GetTransfers(customerName);

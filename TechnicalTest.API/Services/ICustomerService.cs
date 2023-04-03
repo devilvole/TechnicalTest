@@ -8,8 +8,9 @@ namespace TechnicalTest.API.Services
 	{
 		Task<IResult> AddCustomer(AddCustomerModel customer);
 		Task<IResult> DeleteCustomer(string name);
-		Task<IResult> GetAll();
+		Task<IResult> GetAllCustomers();
 		Task<IResult> UpdateCustomer(UpdateCustomerModel updateModel);
+		Task<IResult> GetCustomer(string name);
 
 
 		Task<IResult> AddAccount(AddAccountModel account);
