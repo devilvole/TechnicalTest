@@ -1,0 +1,422 @@
+{
+	"info": {
+		"_postman_id": "19ec7c5e-8fcf-4ef0-8a02-423be00c35ab",
+		"name": "Test sequence - happy path",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26713104"
+	},
+	"item": [
+		{
+			"name": "Delete test customer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7162/Customer/Delete?name=cust1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7162",
+					"path": [
+						"Customer",
+						"Delete"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "cust1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add customer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"cust1\",\r\n  \"birthdate\": \"2023-04-03T15:12:18.139Z\",\r\n  \"transferLimit\": 1000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7162/Customer/Add",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7162",
+					"path": [
+						"Customer",
+						"Add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check customer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is json\", () => {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contain(\"application/json\");\r",
+							"});\r",
+							"pm.test(\"Check customer has correct name\", () => {\r",
+							"    console.log(pm.response.json());\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"name\",\"cust1\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7162/Customer/Get?name=cust1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7162",
+					"path": [
+						"Customer",
+						"Get"
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "cust1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add account 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"accountNumber\": \"acct1\",\r\n  \"frozen\": false,\r\n  \"customerName\": \"cust1\",\r\n  \"amount\": 1000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7162/Account/Add",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7162",
+					"path": [
+						"Account",
+						"Add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add account 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"accountNumber\": \"acct2\",\r\n  \"frozen\": false,\r\n  \"customerName\": \"cust1\",\r\n  \"amount\": 1000\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7162/Account/Add",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7162",
+					"path": [
+						"Account",
+						"Add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check accounts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is json\", () => {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contain(\"application/json\");\r",
+							"});\r",
+							"pm.test(\"Check accounts present\", () => {\r",
+							"    console.log(pm.response.json());\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"accountNumber\",\"acct1\");\r",
+							"    pm.expect(jsonData[1]).to.have.property(\"accountNumber\",\"acct2\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7162/Account/Get?customerName=cust1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7162",
+					"path": [
+						"Account",
+						"Get"
+					],
+					"query": [
+						{
+							"key": "customerName",
+							"value": "cust1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer 1 to 2",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"customerName\": \"cust1\",\r\n  \"sourceAccount\": \"acct1\",\r\n  \"destinationAccount\": \"acct2\",\r\n  \"amount\": 99,\r\n  \"reference\": \"transfer 99 from 1 to 2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7162/AccountTransfer/Transfer",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7162",
+					"path": [
+						"AccountTransfer",
+						"Transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check accounts after transfer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is json\", () => {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contain(\"application/json\");\r",
+							"});\r",
+							"pm.test(\"Check account contents\", () => {\r",
+							"    console.log(pm.response.json());\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"accountNumber\",\"acct1\");\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"amount\", 901.0);\r",
+							"    pm.expect(jsonData[1]).to.have.property(\"accountNumber\",\"acct2\");\r",
+							"    pm.expect(jsonData[1]).to.have.property(\"amount\", 1099.0);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7162/Account/Get?customerName=cust1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7162",
+					"path": [
+						"Account",
+						"Get"
+					],
+					"query": [
+						{
+							"key": "customerName",
+							"value": "cust1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check transfer",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is json\", () => {\r",
+							"    pm.response.to.have.header(\"Content-Type\");\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.contain(\"application/json\");\r",
+							"});\r",
+							"pm.test(\"Check account contents\", () => {\r",
+							"    console.log(pm.response.json());\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"source\",\"acct1\");\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"destination\",\"acct2\");\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"amount\", 99.0);\r",
+							"    pm.expect(jsonData[0]).to.have.property(\"reference\",\"transfer 99 from 1 to 2\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7162/AccountTransfer/GetAll?customerName=cust1",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7162",
+					"path": [
+						"AccountTransfer",
+						"GetAll"
+					],
+					"query": [
+						{
+							"key": "customerName",
+							"value": "cust1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

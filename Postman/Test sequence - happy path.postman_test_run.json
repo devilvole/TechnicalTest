@@ -1,0 +1,340 @@
+{
+	"id": "6f929f7f-747e-4e2b-8bd5-691a14b8e878",
+	"name": "Test sequence - happy path",
+	"timestamp": "2023-04-04T09:07:09.036Z",
+	"collection_id": "26713104-19ec7c5e-8fcf-4ef0-8a02-423be00c35ab",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 16,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2023-04-04T09:07:07.467Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "b425de9d-1988-4094-8604-ff68c45ac782",
+			"name": "Delete test customer",
+			"url": "https://localhost:7162/Customer/Delete?name=cust1",
+			"time": 30,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				30
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "970713db-3ce3-424b-9655-232de10f8cc3",
+			"name": "Add customer",
+			"url": "https://localhost:7162/Customer/Add",
+			"time": 16,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Status code is 200": true
+				}
+			]
+		},
+		{
+			"id": "54f6446b-3025-46e3-98be-54603f30dd87",
+			"name": "Check customer",
+			"url": "https://localhost:7162/Customer/Get?name=cust1",
+			"time": 14,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is json": true,
+				"Check customer has correct name": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Check customer has correct name": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is json": true,
+					"Check customer has correct name": true
+				}
+			]
+		},
+		{
+			"id": "2451ceef-02dd-4da6-a284-2aacdd5745a3",
+			"name": "Add account 1",
+			"url": "https://localhost:7162/Account/Add",
+			"time": 16,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Status code is 200": true
+				}
+			]
+		},
+		{
+			"id": "8434518f-4a70-408e-9eea-7b9fc8d8623a",
+			"name": "Add account 2",
+			"url": "https://localhost:7162/Account/Add",
+			"time": 16,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Status code is 200": true
+				}
+			]
+		},
+		{
+			"id": "d389c3e1-0097-4b79-a961-ddd338fb7b9d",
+			"name": "Check accounts",
+			"url": "https://localhost:7162/Account/Get?customerName=cust1",
+			"time": 14,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is json": true,
+				"Check accounts present": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Check accounts present": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is json": true,
+					"Check accounts present": true
+				}
+			]
+		},
+		{
+			"id": "7d249057-0285-4980-ada0-2f80c6814b21",
+			"name": "Transfer 1 to 2",
+			"url": "https://localhost:7162/AccountTransfer/Transfer",
+			"time": 21,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				21
+			],
+			"allTests": [
+				{
+					"Status code is 200": true
+				}
+			]
+		},
+		{
+			"id": "91b27470-974e-4a56-9e16-568275d8d9a6",
+			"name": "Check accounts after transfer",
+			"url": "https://localhost:7162/Account/Get?customerName=cust1",
+			"time": 13,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is json": true,
+				"Check account contents": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Check account contents": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				13
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is json": true,
+					"Check account contents": true
+				}
+			]
+		},
+		{
+			"id": "a9638802-4012-44cd-ab01-41fb0f4feb78",
+			"name": "Check transfer",
+			"url": "https://localhost:7162/AccountTransfer/GetAll?customerName=cust1",
+			"time": 15,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Content-Type is json": true,
+				"Check account contents": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Content-Type is json": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Check account contents": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				15
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Content-Type is json": true,
+					"Check account contents": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 155,
+	"collection": {
+		"requests": [
+			{
+				"id": "b425de9d-1988-4094-8604-ff68c45ac782",
+				"method": "POST"
+			},
+			{
+				"id": "970713db-3ce3-424b-9655-232de10f8cc3",
+				"method": "POST"
+			},
+			{
+				"id": "54f6446b-3025-46e3-98be-54603f30dd87",
+				"method": "GET"
+			},
+			{
+				"id": "2451ceef-02dd-4da6-a284-2aacdd5745a3",
+				"method": "POST"
+			},
+			{
+				"id": "8434518f-4a70-408e-9eea-7b9fc8d8623a",
+				"method": "POST"
+			},
+			{
+				"id": "d389c3e1-0097-4b79-a961-ddd338fb7b9d",
+				"method": "GET"
+			},
+			{
+				"id": "7d249057-0285-4980-ada0-2f80c6814b21",
+				"method": "POST"
+			},
+			{
+				"id": "91b27470-974e-4a56-9e16-568275d8d9a6",
+				"method": "GET"
+			},
+			{
+				"id": "a9638802-4012-44cd-ab01-41fb0f4feb78",
+				"method": "GET"
+			}
+		]
+	}
+}

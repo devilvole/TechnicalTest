@@ -1,0 +1,470 @@
+{
+	"id": "48591040-143a-4832-91c6-df547a4961c2",
+	"name": "Test sequence - with errors",
+	"timestamp": "2023-04-04T09:56:07.205Z",
+	"collection_id": "26713104-e1aa9203-3b89-494c-bbba-2b0e780847f7",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 21,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2023-04-04T09:56:05.804Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "5805ac17-464f-4d47-8810-6f870f463eca",
+			"name": "Delete test customer",
+			"url": "https://localhost:7162/Customer/Delete?name=cust1",
+			"time": 24,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				24
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "e01feead-9fcb-41ac-acad-b658f6ec257e",
+			"name": "Add customer - no name",
+			"url": "https://localhost:7162/Customer/Add",
+			"time": 11,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"Status code is 422": true,
+				"Body matches string": true
+			},
+			"testPassFailCounts": {
+				"Status code is 422": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body matches string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				11
+			],
+			"allTests": [
+				{
+					"Status code is 422": true,
+					"Body matches string": true
+				}
+			]
+		},
+		{
+			"id": "56388005-d7e4-453e-aa70-8095abea42fc",
+			"name": "Check customer - fails",
+			"url": "https://localhost:7162/Customer/Get?name=cust1",
+			"time": 13,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"Status code is 422": true,
+				"Body matches string": true
+			},
+			"testPassFailCounts": {
+				"Status code is 422": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body matches string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				13
+			],
+			"allTests": [
+				{
+					"Status code is 422": true,
+					"Body matches string": true
+				}
+			]
+		},
+		{
+			"id": "ec971e16-bef3-4b21-af2f-52264a638f92",
+			"name": "Add customer",
+			"url": "https://localhost:7162/Customer/Add",
+			"time": 19,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				19
+			],
+			"allTests": [
+				{
+					"Status code is 200": true
+				}
+			]
+		},
+		{
+			"id": "bb6f62bd-70c5-4650-817e-735e0552b4fd",
+			"name": "Add customer again",
+			"url": "https://localhost:7162/Customer/Add",
+			"time": 14,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"Status code is 422": true,
+				"Body matches string": true
+			},
+			"testPassFailCounts": {
+				"Status code is 422": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body matches string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Status code is 422": true,
+					"Body matches string": true
+				}
+			]
+		},
+		{
+			"id": "8a675b01-2f78-4a60-8c27-639a5dade40d",
+			"name": "Add account bad customer",
+			"url": "https://localhost:7162/Account/Add",
+			"time": 13,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"Status code is 422": true,
+				"Body matches string": true
+			},
+			"testPassFailCounts": {
+				"Status code is 422": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body matches string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				13
+			],
+			"allTests": [
+				{
+					"Status code is 422": true,
+					"Body matches string": true
+				}
+			]
+		},
+		{
+			"id": "03d2dc7c-ae96-42e5-974c-b1ed9ed96998",
+			"name": "Add account 1",
+			"url": "https://localhost:7162/Account/Add",
+			"time": 16,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Status code is 200": true
+				}
+			]
+		},
+		{
+			"id": "340d652f-379a-4cc3-b952-c6ef97795275",
+			"name": "Add account 1 again",
+			"url": "https://localhost:7162/Account/Add",
+			"time": 13,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"Status code is 422": true,
+				"Body matches string": true
+			},
+			"testPassFailCounts": {
+				"Status code is 422": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body matches string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				13
+			],
+			"allTests": [
+				{
+					"Status code is 422": true,
+					"Body matches string": true
+				}
+			]
+		},
+		{
+			"id": "d3ef919d-1ab8-4e8b-ba82-573c7fa05f02",
+			"name": "Transfer 1 to 2 fails - missing account",
+			"url": "https://localhost:7162/AccountTransfer/Transfer",
+			"time": 14,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"Status code is 422": true,
+				"Body matches string": true
+			},
+			"testPassFailCounts": {
+				"Status code is 422": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body matches string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Status code is 422": true,
+					"Body matches string": true
+				}
+			]
+		},
+		{
+			"id": "e155c725-734d-4f9e-ae11-6f2549df3fba",
+			"name": "Transfer 1 to 2 fails - same account",
+			"url": "https://localhost:7162/AccountTransfer/Transfer",
+			"time": 15,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"Status code is 422": true,
+				"Body matches string": true
+			},
+			"testPassFailCounts": {
+				"Status code is 422": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body matches string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				15
+			],
+			"allTests": [
+				{
+					"Status code is 422": true,
+					"Body matches string": true
+				}
+			]
+		},
+		{
+			"id": "03913027-8c42-4e6e-8873-0c6698dae524",
+			"name": "Add account 2",
+			"url": "https://localhost:7162/Account/Add",
+			"time": 16,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				16
+			],
+			"allTests": [
+				{
+					"Status code is 200": true
+				}
+			]
+		},
+		{
+			"id": "ad7c7382-20e3-4340-bea7-acd11d211ccf",
+			"name": "Transfer 1 to 2 fails - insufficient funds",
+			"url": "https://localhost:7162/AccountTransfer/Transfer",
+			"time": 14,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"Status code is 422": true,
+				"Body matches string": true
+			},
+			"testPassFailCounts": {
+				"Status code is 422": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body matches string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Status code is 422": true,
+					"Body matches string": true
+				}
+			]
+		},
+		{
+			"id": "92aba587-c106-498c-8ecc-076e53daff1c",
+			"name": "Transfer 1 to 2 fails - over limit",
+			"url": "https://localhost:7162/AccountTransfer/Transfer",
+			"time": 14,
+			"responseCode": {
+				"code": 422,
+				"name": "Unprocessable Entity"
+			},
+			"tests": {
+				"Status code is 422": true,
+				"Body matches string": true
+			},
+			"testPassFailCounts": {
+				"Status code is 422": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body matches string": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				14
+			],
+			"allTests": [
+				{
+					"Status code is 422": true,
+					"Body matches string": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 196,
+	"collection": {
+		"requests": [
+			{
+				"id": "5805ac17-464f-4d47-8810-6f870f463eca",
+				"method": "POST"
+			},
+			{
+				"id": "e01feead-9fcb-41ac-acad-b658f6ec257e",
+				"method": "POST"
+			},
+			{
+				"id": "56388005-d7e4-453e-aa70-8095abea42fc",
+				"method": "GET"
+			},
+			{
+				"id": "ec971e16-bef3-4b21-af2f-52264a638f92",
+				"method": "POST"
+			},
+			{
+				"id": "bb6f62bd-70c5-4650-817e-735e0552b4fd",
+				"method": "POST"
+			},
+			{
+				"id": "8a675b01-2f78-4a60-8c27-639a5dade40d",
+				"method": "POST"
+			},
+			{
+				"id": "03d2dc7c-ae96-42e5-974c-b1ed9ed96998",
+				"method": "POST"
+			},
+			{
+				"id": "340d652f-379a-4cc3-b952-c6ef97795275",
+				"method": "POST"
+			},
+			{
+				"id": "d3ef919d-1ab8-4e8b-ba82-573c7fa05f02",
+				"method": "POST"
+			},
+			{
+				"id": "e155c725-734d-4f9e-ae11-6f2549df3fba",
+				"method": "POST"
+			},
+			{
+				"id": "03913027-8c42-4e6e-8873-0c6698dae524",
+				"method": "POST"
+			},
+			{
+				"id": "ad7c7382-20e3-4340-bea7-acd11d211ccf",
+				"method": "POST"
+			},
+			{
+				"id": "92aba587-c106-498c-8ecc-076e53daff1c",
+				"method": "POST"
+			}
+		]
+	}
+}

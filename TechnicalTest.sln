@@ -9,6 +9,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TechnicalTest.Data", "Techn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceTests", "ServiceTests\ServiceTests.csproj", "{25A82344-0507-47A5-89F7-D238784B589B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5D0CB376-B00F-4EC0-9ED7-F7FF74DC5EE0}"
+	ProjectSection(SolutionItems) = preProject
+		Postman\Test sequence - happy path.postman_collection.json = Postman\Test sequence - happy path.postman_collection.json
+		Postman\Test sequence - happy path.postman_test_run.json = Postman\Test sequence - happy path.postman_test_run.json
+		Postman\Test sequence - with errors.postman_collection.json = Postman\Test sequence - with errors.postman_collection.json
+		Postman\Test sequence - with errors.postman_test_run.json = Postman\Test sequence - with errors.postman_test_run.json
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
