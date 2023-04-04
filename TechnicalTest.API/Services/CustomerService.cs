@@ -22,6 +22,11 @@ namespace TechnicalTest.API.Services
 		/// </summary>
 		public async Task<IResult> AddCustomer(AddCustomerModel customer)
 		{
+			if (String.IsNullOrEmpty(customer.Name))
+			{
+				return Results.UnprocessableEntity("Invalid name");
+			}
+
 			if (await db.Customers.AnyAsync(x => x.Name == customer.Name))
 			{
 				return Results.UnprocessableEntity("Customer already exists");
@@ -137,6 +142,16 @@ namespace TechnicalTest.API.Services
 			if (customer is not Customer)
 			{
 				return Results.UnprocessableEntity("Customer not found");
+			}
+
+			if (String.IsNullOrEmpty(account.AccountNumber))
+			{
+				return Results.UnprocessableEntity("Invalid account number");
+			}
+
+			if (customer.BankAccounts.Select(x => x.AccountNumber == account.AccountNumber).Any())
+			{
+				return Results.UnprocessableEntity("Account already exists");
 			}
 
 			customer.BankAccounts.Add(new BankAccount

@@ -49,5 +49,9 @@ namespace TechnicalTest.API.Controllers
 		{
 			return await customerService.DeleteCustomer(name);
 		}
+
+		[ApiExplorerSettings(IgnoreApi = true)]
+		[Route("/error")]
+		public IActionResult HandleError() => Problem();
 	}
 }

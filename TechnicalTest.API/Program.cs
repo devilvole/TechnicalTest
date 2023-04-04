@@ -32,6 +32,10 @@ public class Program
 			app.UseSwagger();
 			app.UseSwaggerUI();
 		}
+		else
+		{
+			app.UseExceptionHandler("/error");
+		}
 
 		using (var scope = app.Services.CreateScope())
 		{
