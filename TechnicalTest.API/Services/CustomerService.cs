@@ -149,7 +149,7 @@ namespace TechnicalTest.API.Services
 				return Results.UnprocessableEntity("Invalid account number");
 			}
 
-			if (customer.BankAccounts.Select(x => x.AccountNumber == account.AccountNumber).Any())
+			if (customer.BankAccounts.Where(x => x.AccountNumber == account.AccountNumber).Any())
 			{
 				return Results.UnprocessableEntity("Account already exists");
 			}
